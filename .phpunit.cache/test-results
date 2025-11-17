@@ -1,0 +1,1 @@
+{"version":2,"defects":{"ExampleTest::testTwoValuesAreSame":5,"FunctionsTest::testAddPositiiveIntegers":5,"FunctionsTest::testAddNegativeIntegers":5,"PersonTest::testGetFullNameAndSurname":5},"times":{"ExampleTest::testTwoValuesAreSame":0.001,"FunctionsTest::testAddPositiiveIntegers":0,"FunctionsTest::testAddNegativeIntegers":0.001,"PersonTest::testGetFullNameAndSurname":0.001}}
