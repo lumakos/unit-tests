@@ -3,33 +3,53 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Depends;
 
 final class QueueTest extends TestCase
 {
-    public function testNewQueueIsEmpty(): Queue
+    private Queue $q;
+
+    protected function setUp(): void
     {
-        $q = new Queue();
-
-        $this->assertSame(0, $q->getSize());
-
-        return $q;
+        $this->q = new Queue();
     }
 
-    #[Depends('testNewQueueIsEmpty')]
-    public function testPushAddsItem(Queue $q): Queue
+    protected function tearDown(): void
     {
-        $q->push('an item');
-
-        $this->assertSame(1, $q->getSize());
-
-        return $q;
+        unset($this->q);
     }
 
-    #[Depends('testPushAddsItem')]
-    public function testPopAndRemovesItem(Queue $q): void
+    public function testNewQueueIsEmpty(): void
     {
-        $this->assertSame('an item', $q->pop());
-        $this->assertSame(0, $q->getSize());
+        $this->assertSame(0, $this->q->getSize());
+    }
+
+    public function testPushAddsItem(): void
+    {
+        $this->q->push('an item');
+
+        $this->assertSame(1, $this->q->getSize());
+    }
+
+    public function testPopAndRemovesItem(): void
+    {
+        $this->q->push('an item');
+
+        $this->assertSame('an item', $this->q->pop());
+        $this->assertSame(0, $this->q->getSize());
+    }
+
+    public function testPopTheCorrectItem(): void
+    {
+        $this->q->push('an item 1');
+        $this->q->push('an item 2');
+
+        $this->assertSame('an item 1', $this->q->pop());
+    }
+
+    public function testExpectExceptionWhenQueueIsEmpty(): void
+    {
+        $this->expectException(\UnderflowException::class);
+        $this->expectExceptionMessage('Queue is empty');
+        $this->q->pop();        
     }
 }
